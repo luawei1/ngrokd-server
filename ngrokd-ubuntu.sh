@@ -51,7 +51,7 @@ install_go() {
             wget https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz --no-check-certificate
         fi
         tar -zxf go1.4.linux-amd64.tar.gz
-        mv go go1.4
+        mv go /root/go1.4
         tar -C /usr/local/ -zxf go1.7.linux-amd64.tar.gz
     else
         # 暂时用不到
@@ -76,7 +76,7 @@ install_ngrok() {
     if [ ! -d ngrok ]; then
         git clone https://github.com/inconshreveable/ngrok.git
     fi
-    cd $SELFPATH/ngrok
+    cd ngrok
     echo '请输入解析的域名'
     read NGROK_DOMAIN
     openssl genrsa -out rootCA.key 2048
