@@ -7,6 +7,7 @@
 # 2. git clone **.git
 # 3. cd *.git && sh ngrokd-ubuntu.sh							#
 #############################################
+source /etc/profile
 # 获取当前脚本执行路径
 SELFPATH=$(
     cd "$(dirname "$0")"
