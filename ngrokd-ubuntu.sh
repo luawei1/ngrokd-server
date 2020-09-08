@@ -153,7 +153,6 @@ echo "------------------------"
 echo "1、全新安装"
 echo "2、生成客户端"
 echo "3、启动服务"
-echo "4、启动客户端"
 echo "------------------------"
 read num
 case "$num" in
@@ -172,18 +171,6 @@ case "$num" in
     echo "服务端连接端口"
     read port
     $SELFPATH/ngrok/bin/ngrokd -domain=$domain -tunnelAddr=":$port"
-    ;;
-[4])
-    echo "输入服务器域名"
-    read domain
-    echo "输入子域名"
-    read subdomain
-    echo "服务端连接端口"
-    read port
-    touch ngrok.cfg
-    sed -i '$a server_addr: "'$domain':'$port'"' ngrok.cfg
-    sed -i '$a trust_host_root_certs: false"' ngrok.cfg
-    ./ngrok -config=ngrok.cfg -subdomain=$subdomain 80
     ;;
 *) echo "" ;;
 esac
