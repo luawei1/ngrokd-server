@@ -21,6 +21,7 @@ install_yilai() {
     apt -y upgrade
     # linux 屏幕管理包
     apt install -y screen
+    cd /root
     # 清理openssl缓存
     openssl rand -writerand .rnd
 }
@@ -173,10 +174,16 @@ case "$num" in
     $SELFPATH/ngrok/bin/ngrokd -domain=$domain -tunnelAddr=":$port"
     ;;
 [4])
-    echo "输入启动域名"
+    echo "输入服务器域名"
     read domain
-    echo server_addr: '"'$domain:3399'"'
-    echo "trust_host_root_certs: false"
+    echo "输入子域名"
+    read subdomain
+    echo "服务端连接端口"
+    read port
+    touch ngrok.cfg
+    sed -i '$a server_addr: "'$domain':'$port'"' ngrok.cfg
+    sed -i '$a trust_host_root_certs: false"' ngrok.cfg
+    ./ngrok -config=ngrok.cfg -subdomain=$subdomain 80
     ;;
 *) echo "" ;;
 esac
