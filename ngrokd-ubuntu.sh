@@ -26,17 +26,6 @@ install_yilai() {
     openssl rand -writerand .rnd
 }
 
-# 安装git
-install_git() {
-    uninstall_git
-    apt install -y git
-}
-
-# 卸载git
-uninstall_git() {
-    apt remove -y git
-}
-
 # 安装go
 install_go() {
     cd $SELFPATH
@@ -71,7 +60,6 @@ uninstall_go() {
 
 # 安装ngrok
 install_ngrok() {
-    uninstall_ngrok
     cd $SELFPATH
     # if [ ! -d ngrok ]; then
     #     git clone https://github.com/inconshreveable/ngrok.git
@@ -95,9 +83,9 @@ install_ngrok() {
 }
 
 # 卸载ngrok
-uninstall_ngrok() {
-    rm -rf $SELFPATH/ngrok
-}
+# uninstall_ngrok() {
+#     rm -rf $SELFPATH/ngrok
+# }
 
 # 编译客户端
 compile_client() {
@@ -158,7 +146,6 @@ read num
 case "$num" in
 [1])
     install_yilai
-    install_git
     install_go
     install_ngrok
     ;;
