@@ -73,9 +73,9 @@ uninstall_go() {
 install_ngrok() {
     uninstall_ngrok
     cd $SELFPATH
-    if [ ! -d ngrok ]; then
-        git clone https://github.com/inconshreveable/ngrok.git
-    fi
+    # if [ ! -d ngrok ]; then
+    #     git clone https://github.com/inconshreveable/ngrok.git
+    # fi
     cd ngrok
     echo '请输入解析的域名'
     read NGROK_DOMAIN
