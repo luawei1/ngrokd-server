@@ -61,10 +61,14 @@ install_ngrok() {
     cp rootCA.pem assets/client/tls/ngrokroot.crt
     cp device.crt assets/server/tls/snakeoil.crt
     cp device.key assets/server/tls/snakeoil.key
+}
+
+# 生成服务端
+make_server() {
+    cd ngrok-master
     # 编译服务端
     make release-server
 }
-
 # 编译客户端
 compile_client() {
     cd /usr/local/go/src
@@ -119,8 +123,9 @@ echo "------------------------"
 echo "1、安装依赖"
 echo "2、安装Go"
 echo "3、安装Ngrok"
-echo "4、生成客户端"
-echo "5、启动服务"
+echo "4、生成服务端"
+echo "5、生成客户端"
+echo "6、启动服务"
 echo "------------------------"
 read num
 case "$num" in
@@ -136,9 +141,12 @@ case "$num" in
     install_ngrok
     ;;
 [4])
-    client
+    make_server
     ;;
 [5])
+    client
+    ;;
+[6])
     echo "输入启动域名"
     read domain
     echo "服务端连接端口"
