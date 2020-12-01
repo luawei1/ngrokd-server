@@ -59,7 +59,6 @@ uninstall_go() {
 
 # 安装ngrok
 install_ngrok() {
-    cd $SELFPATH
     cd ngrok
     echo '请输入解析的域名'
     read NGROK_DOMAIN
