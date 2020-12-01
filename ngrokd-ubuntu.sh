@@ -49,7 +49,7 @@ install_go() {
 
 # 安装ngrok
 install_ngrok() {
-    cd ngrok-master
+    cd ngrok
     echo '请输入解析的域名'
     read NGROK_DOMAIN
     openssl genrsa -out rootCA.key 2048
@@ -65,7 +65,7 @@ install_ngrok() {
 
 # 生成服务端
 make_server() {
-    cd ngrok-master
+    cd ngrok
     # 编译服务端
     make release-server
 }
