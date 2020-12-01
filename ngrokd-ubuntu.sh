@@ -17,19 +17,18 @@ GOOS=$(go env | grep GOOS | awk -F\" '{print $2}')
 GOARCH=$(go env | grep GOARCH | awk -F\" '{print $2}')
 # 安装依赖
 install_yilai() {
-    apt -y update
-    apt -y upgrade
+    cd $SELFPATH
     # linux 屏幕管理包
     apt install -y screen
-    cd /root
     # 清理openssl缓存
     openssl rand -writerand .rnd
+    # 下载git包
+    git clone https://github.com/inconshreveable/ngrok.git
 }
 
 # 安装go
 install_go() {
     cd $SELFPATH
-    uninstall_go
     # 动态链接库，用于下面的判断条件生效
     ldconfig
     # 判断操作系统位数下载不同的安装包
@@ -61,9 +60,6 @@ uninstall_go() {
 # 安装ngrok
 install_ngrok() {
     cd $SELFPATH
-    # if [ ! -d ngrok ]; then
-    #     git clone https://github.com/inconshreveable/ngrok.git
-    # fi
     cd ngrok
     echo '请输入解析的域名'
     read NGROK_DOMAIN
@@ -72,7 +68,7 @@ install_ngrok() {
     openssl genrsa -out device.key 2048
     openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr
     openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000
-
+    
     cp rootCA.pem assets/client/tls/ngrokroot.crt
     cp device.crt assets/server/tls/snakeoil.crt
     cp device.key assets/server/tls/snakeoil.key
@@ -83,9 +79,9 @@ install_ngrok() {
 }
 
 # 卸载ngrok
-# uninstall_ngrok() {
-#     rm -rf $SELFPATH/ngrok
-# }
+uninstall_ngrok() {
+    rm -rf $SELFPATH/ngrok
+}
 
 # 编译客户端
 compile_client() {
@@ -138,21 +134,29 @@ echo "#############################################"
 echo "#作者网名：KevinCheng"
 echo "#############################################"
 echo "------------------------"
-echo "1、全新安装"
-echo "2、生成客户端"
-echo "3、启动服务"
+echo "1、安装依赖"
+echo "2、安装Go"
+echo "3、安装Ngrok"
+echo "4、生成客户端"
+echo "5、启动服务"
 echo "------------------------"
 read num
 case "$num" in
 [1])
     install_yilai
-    install_go
-    install_ngrok
+    
     ;;
 [2])
-    client
+    install_go
+    
     ;;
 [3])
+    install_ngrok
+    ;;
+[4])
+    client
+    ;;
+[5])
     echo "输入启动域名"
     read domain
     echo "服务端连接端口"
