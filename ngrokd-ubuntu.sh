@@ -22,8 +22,6 @@ install_yilai() {
     apt install -y screen
     # 清理openssl缓存
     openssl rand -writerand .rnd
-    # 下载git包
-    git clone https://github.com/inconshreveable/ngrok.git
 }
 
 # 安装go
@@ -47,39 +45,24 @@ install_go() {
     fi
     sed -i '$a export GOROOT=/usr/local/go' /etc/profile
     sed -i '$a export PATH=$GOROOT/bin:$PATH' /etc/profile
-    source /etc/profile
-}
-
-# 卸载go
-
-uninstall_go() {
-    rm -rf /root/go1.4
-    rm -rf /usr/local/go
 }
 
 # 安装ngrok
 install_ngrok() {
-    cd ngrok
+    cd ngrok-master
     echo '请输入解析的域名'
     read NGROK_DOMAIN
     openssl genrsa -out rootCA.key 2048
-    openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=$NGROK_DOMAIN" -days 5000 -out rootCA.pem
+    openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=whbaqn.com" -days 5000 -out rootCA.pem
     openssl genrsa -out device.key 2048
-    openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr
+    openssl req -new -key device.key -subj "/CN=whbaqn.com" -out device.csr
     openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000
     
     cp rootCA.pem assets/client/tls/ngrokroot.crt
     cp device.crt assets/server/tls/snakeoil.crt
     cp device.key assets/server/tls/snakeoil.key
-    # 防止文件没生效c
-    source /etc/profile
     # 编译服务端
     make release-server
-}
-
-# 卸载ngrok
-uninstall_ngrok() {
-    rm -rf $SELFPATH/ngrok
 }
 
 # 编译客户端
