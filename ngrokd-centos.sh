@@ -19,7 +19,8 @@ GOARCH=$(go env | grep GOARCH | awk -F\" '{print $2}')
 install_yilai() {
     cd $SELFPATH
     # linux 屏幕管理包
-    apt install -y screen
+    #apt install -y screen #Ubuntu
+    yum install -y screen #centos
     # 清理openssl缓存
     openssl rand -writerand .rnd
 }
@@ -151,7 +152,7 @@ case "$num" in
     read domain
     echo "服务端连接端口"
     read port
-    $SELFPATH/ngrok/bin/ngrokd -domain=$domain -tunnelAddr=":$port"
+    $SELFPATH/ngrok/bin/ngrokd -domain=$domain -tunnelAddr=":$port" &
     ;;
 *) echo "" ;;
 esac
